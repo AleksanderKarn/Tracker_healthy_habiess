@@ -1,18 +1,25 @@
 from django.conf import settings
 from django.db import models
 
-
 from user.models import NULLABLE
 
 
-
-
-
 class Habit(models.Model):
+    RUN = "run"
+    ENDED = 'executed'
+    PROCESSED = 'processed'  # Статус после отправленного письма о том что платеж выполнен
+    STATUS_HABIT = (
+        ('run', 'в процессе'),
+        ('ended', 'выполнена'),
+        ('processed', 'в ожидании начала')
+    )
+
+    ONE_HOUR = 'one_hour'
     ONE_DAY = 'one_day'
     ONE_WEEK = 'one_week'
     ONE_MONTH = 'one_month'
     PERIODS = (
+        ('one_hour', 'раз в час'),
         ('one_day', 'раз в день'),
         ('one_week', 'раз в неделю'),
         ('one_month', 'раз в месяц')
@@ -30,10 +37,11 @@ class Habit(models.Model):
     time_to_complete = models.TimeField(verbose_name='время на выполнение')
     is_public = models.BooleanField(default=False, verbose_name='признак публичности привычки')
 
+    status = models.CharField(choices=STATUS_HABIT, max_length=20, default=PROCESSED, verbose_name='Статус привычки')
+
     def __str__(self):
         return f'Привычка {self.action}'
 
     class Meta:
         verbose_name = 'привычка'
         verbose_name_plural = 'привычки'
-

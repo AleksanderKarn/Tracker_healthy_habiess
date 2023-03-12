@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'django_celery_beat',
     'corsheaders',
     'drf_yasg',
     'habit',
@@ -165,3 +166,9 @@ CORS_ORIGIN_ALLOW_ALL = True
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=10)
 }
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0'
+
+TG_TOKEN = "6213372786:AAE-YngklE8q4X3PyqIdPGxFn1qDUgVI_XU"
+
+CHAT_ID = "887588479"
