@@ -26,7 +26,7 @@ class HabitTestCase(APITestCase):
 
     def test_habit_create(self):
         response = self.client.post(
-            '/habit/',
+            '/api/habit/',
             {
                 "action": "Делать зарядку",
                 "location_action": "Дома",
@@ -44,7 +44,7 @@ class HabitTestCase(APITestCase):
     def test_get_id_habit(self):
         self.test_habit_create()
         response = self.client.get(
-            '/habit/1/'
+            '/api/habit/1/'
         )
 
         self.assertEqual(
@@ -72,7 +72,7 @@ class HabitTestCase(APITestCase):
     def test_get_habit(self):
         self.test_habit_create()
         response = self.client.get(
-            '/habit/'
+            '/api/habit/'
         )
         self.assertEqual(
             response.status_code,
@@ -99,7 +99,7 @@ class HabitTestCase(APITestCase):
     def test_put_or_patch_habit(self):
         self.test_habit_create()
         response = self.client.put(
-            '/habit/1/',
+            '/api/habit/1/',
             {
                 "action": "Пить воду",
                 "location_action": "Дома",
@@ -131,7 +131,7 @@ class HabitTestCase(APITestCase):
         )
         self.test_habit_create()
         response = self.client.patch(
-            '/habit/1/',
+            '/api/habit/1/',
             {
                 "action": "Пить воду",
                 "location_action": "Дома",
@@ -164,7 +164,7 @@ class HabitTestCase(APITestCase):
     def test_delete_habit(self):
         self.test_habit_create()
         response = self.client.delete(
-            '/habit/1/'
+            '/api/habit/1/'
         )
 
         self.assertEqual(

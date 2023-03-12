@@ -17,9 +17,9 @@ from django.contrib import admin
 from django.urls import path, include, re_path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
-from rest_framework import permissions, routers
+from rest_framework import permissions
 
-from habit.views import HabitViewSet
+
 
 schema_view = get_schema_view(
     openapi.Info(
@@ -34,8 +34,7 @@ schema_view = get_schema_view(
     permission_classes=[permissions.AllowAny],
 )
 
-router = routers.SimpleRouter()
-router.register(r'habit', HabitViewSet)
+
 
 urlpatterns = [
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
@@ -44,5 +43,6 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('user/', include('user.urls')),
-    path('', include(router.urls)),
+    path('', include('habit.urls')),
+   # path('', HabitView.as_view(), name='habit')
 ]
