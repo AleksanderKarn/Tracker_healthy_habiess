@@ -7,7 +7,8 @@ from user.models import NULLABLE
 class Habit(models.Model):
     RUN = "run"
     ENDED = 'executed'
-    PROCESSED = 'processed'  # Статус после отправленного письма о том что платеж выполнен
+    PROCESSED = 'processed'
+
     STATUS_HABIT = (
         ('run', 'в процессе'),
         ('ended', 'выполнена'),
@@ -17,12 +18,11 @@ class Habit(models.Model):
     ONE_HOUR = 'one_hour'
     ONE_DAY = 'one_day'
     ONE_WEEK = 'one_week'
-    ONE_MONTH = 'one_month'
+
     PERIODS = (
         ('one_hour', 'раз в час'),
         ('one_day', 'раз в день'),
         ('one_week', 'раз в неделю'),
-        ('one_month', 'раз в месяц')
     )
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True)
     location_action = models.CharField(max_length=150, verbose_name='Место для выполнения привычки')
@@ -33,7 +33,7 @@ class Habit(models.Model):
     pleasant_habit = models.ForeignKey('self', related_name='pleasant_habi', on_delete=models.SET_NULL, **NULLABLE)
 
     period = models.CharField(max_length=20, choices=PERIODS, default=ONE_DAY, verbose_name='периодичность')
-    award = models.CharField(max_length=150, verbose_name='вознаграждение')
+    award = models.CharField(max_length=150, verbose_name='вознаграждение', **NULLABLE)
     time_to_complete = models.TimeField(verbose_name='время на выполнение')
     is_public = models.BooleanField(default=False, verbose_name='признак публичности привычки')
 

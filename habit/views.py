@@ -1,41 +1,49 @@
-
-from rest_framework import viewsets
-from rest_framework.response import Response
-from rest_framework.views import APIView
+from rest_framework import generics
 
 from habit.models import Habit
+from habit.permissions import IsOwner
 from habit.serializers import HabitSerializer
 
 
-class HabitViewSet(viewsets.ModelViewSet):
+class HabitListView(generics.ListAPIView):
     serializer_class = HabitSerializer
     queryset = Habit.objects.all()
 
-    def get(self, request):
-        output = [
-            {
-                "award": output.award,
-                "action": output.action
-            } for output in Habit.objects.all()
-        ]
-        return Response(output)
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(owner=self.request.user)
+
+
+class HabitPublicView(generics.ListAPIView):
+    serializer_class = HabitSerializer
+    queryset = Habit.objects.all()
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.filter(is_public=True)
+
+
+class HabitCreateAPIView(generics.CreateAPIView):
+    serializer_class = HabitSerializer
+    queryset = Habit.objects.all()
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-#class HabitView(APIView):
-#    def get(self, request):
-#           output = [
-#               {
-#                   "award": output.award,
-#                   "action": output.action
-#               } for output in Habit.objects.all()
-#           ]
-#           return Response(output)
-#
-#
-#    def post(self, request):
-#        serializer = HabitSerializer(data=request.data)
-#        if serializer.is_valid(raise_exception=True):
-#            serializer.save()
-#            return Response(serializer.data)
+
+class HabitDestroyAPIView(generics.DestroyAPIView):
+    serializer_class = HabitSerializer
+    queryset = Habit.objects.all()
+    permission_classes = [IsOwner]
+
+
+class HabitUpdateAPIView(generics.UpdateAPIView):
+    serializer_class = HabitSerializer
+    queryset = Habit.objects.all()
+    permission_classes = [IsOwner]
+
+
+class HabitRetriveAPIView(generics.RetrieveAPIView):
+    serializer_class = HabitSerializer
+    queryset = Habit.objects.all()
+    permission_classes = [IsOwner]

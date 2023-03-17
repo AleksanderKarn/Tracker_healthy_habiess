@@ -9,13 +9,13 @@ class UserManager(BaseUserManager):
     use_in_migrations = True
 
     def _create_user(self, email, password, **extra_fields):
-        if not email:
-            raise ValueError('Users require an email field')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+        if email and password:
+            email = self.normalize_email(email)
+            user = self.model(email=email, **extra_fields)
+            user.set_password(password)
+            user.save(using=self._db)
+            return user
+        raise ValueError('Users require an email and password field')
 
     def create_user(self, email, password, **extra_fields):
         extra_fields.setdefault('is_staff', False)
@@ -42,10 +42,12 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(verbose_name='Почта', unique=True)
 
+    chat_id = models.CharField(max_length=20, verbose_name='chat_id', **NULLABLE)
+
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['password']
 
     def __str__(self):
         return f'Пользователь {self.email}'
