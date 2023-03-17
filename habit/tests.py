@@ -26,7 +26,7 @@ class HabitTestCase(APITestCase):
 
     def test_habit_create(self):
         response = self.client.post(
-            '/api/habit/',
+            '/habit/create/',
             {
                 "action": "Делать зарядку",
                 "location_action": "Дома",
@@ -44,7 +44,7 @@ class HabitTestCase(APITestCase):
     def test_get_id_habit(self):
         self.test_habit_create()
         response = self.client.get(
-            '/api/habit/1/'
+            '/habit/1/'
         )
 
         self.assertEqual(
@@ -65,14 +65,15 @@ class HabitTestCase(APITestCase):
                 "time_to_complete": "00:10:00",
                 "is_public": False,
                 "owner": 1,
-                "pleasant_habit": None
+                "pleasant_habit": None,
+                "status": "processed"
             }
         )
 
     def test_get_habit(self):
         self.test_habit_create()
         response = self.client.get(
-            '/api/habit/'
+            '/habit/'
         )
         self.assertEqual(
             response.status_code,
@@ -92,14 +93,15 @@ class HabitTestCase(APITestCase):
                     "time_to_complete": "00:10:00",
                     "is_public": False,
                     "owner": 1,
-                    "pleasant_habit": None
+                    "pleasant_habit": None,
+                    "status": "processed"
                 }
             ]
         )
     def test_put_or_patch_habit(self):
         self.test_habit_create()
         response = self.client.put(
-            '/api/habit/1/',
+            '/habit/update/1/',
             {
                 "action": "Пить воду",
                 "location_action": "Дома",
@@ -126,12 +128,13 @@ class HabitTestCase(APITestCase):
                 "time_to_complete": "00:10:00",
                 "is_public": False,
                 "owner": 1,
-                "pleasant_habit": None
+                "pleasant_habit": None,
+                "status": "processed"
             }
         )
         self.test_habit_create()
         response = self.client.patch(
-            '/api/habit/1/',
+            '/habit/update/1/',
             {
                 "action": "Пить воду",
                 "location_action": "Дома",
@@ -158,13 +161,14 @@ class HabitTestCase(APITestCase):
                 "time_to_complete": "00:10:00",
                 "is_public": False,
                 "owner": 1,
-                "pleasant_habit": None
+                "pleasant_habit": None,
+                "status": "processed"
             }
         )
     def test_delete_habit(self):
         self.test_habit_create()
         response = self.client.delete(
-            '/api/habit/1/'
+            '/habit/delete/1/'
         )
 
         self.assertEqual(
