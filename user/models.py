@@ -47,7 +47,7 @@ class User(AbstractUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['password']
+    REQUIRED_FIELDS = ['password', 'chat_id']
 
     def __str__(self):
         return f'Пользователь {self.email}'

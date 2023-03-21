@@ -28,14 +28,7 @@ app.conf.beat_schedule = {
     },
     "status_change_one_day": {
         "task": "habit.tasks.setup_default_status_one_day",
-        "schedule": crontab(minute='*/10'),
+        "schedule": crontab(minute='*/1'),
     },
-    "status_change_one_week": {
-        "task": "habit.tasks.setup_default_status_one_week",
-        "schedule": crontab(minute='*/10'),
-    },
-    "status_change_one_month": {
-        "task": "habit.tasks.setup_default_status_one_month",
-        "schedule": crontab(minute='*/10'),
-    },
+
 }
